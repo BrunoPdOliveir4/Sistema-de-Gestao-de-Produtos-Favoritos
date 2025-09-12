@@ -9,9 +9,9 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   app.setGlobalPrefix('api');
-  
+
   const document = SwaggerModule.createDocument(app, swaggerConfig);
-  SwaggerModule.setup('docs', app, document); 
+  SwaggerModule.setup('docs', app, document);
 
   const port = configService.get<number>('port') || 2000;
   await app.listen(port);
