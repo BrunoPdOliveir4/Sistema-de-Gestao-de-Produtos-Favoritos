@@ -1,12 +1,44 @@
 # Desafio Técnico AiqFome
-## Introdução
-### Motivações
+---
 
-### Dicionário de Expressões
+## Sumário
+- [Introdução](#introdução)
+  - [Motivações](#motivações)
+  - [Escopo geral e considerações](#escopo-geral-e-considerações)
+  - [Dicionário de Expressões](#dicionário-de-expressões)
+- [Justificativa de escolhas](#justificativa-de-escolhas)
+  - [Desenvolvimento](#desenvolvimento)
+    - [Linguagem: Typescript](#linguagem-typescript)
+    - [Framework: NestJS](#framework-nestjs)
+    - [Gerenciador de Pacotes: pnpm](#gerenciador-de-pacotes-pnpm)
+    - [ORM: TypeORM](#orm-mapeamento-de-banco-de-dados-typeorm)
+    - [Testes: Jest](#testes-jest)
+  - [Infraestrutura](#infraestrutura)
+    - [Banco de Dados: Postgres](#banco-de-dados-postgres)
+    - [Docker: Banco de dados](#docker-banco-de-dados)
+    - [Documentação: Swagger](#documentação-swagger)
+    - [CI/CD: Github Actions](#cicd-github-actions)
+- [Planejamento](#planejamento)
+  - [Diagramas](#diagramas)
+    - [DER (Diagrama Entidade e Relacionamento)](#der-diagrama-entidade-e-relacionamento)
+    - [Diagrama de classes](#diagrama-de-classes)
+  - [Cuidados de Segurança](#cuidados-de-segurança)
+    - [JWT](#jwt)
+    - [LeftHook](#lefthook)
+    - [Rate-Limit](#rate-limit)
+
+
+---
+## Introdução
+
+### Motivações
 
 ### Escopo geral e considerações
 
+### Dicionário de Expressões
 
+
+---
 ## Justificativa de escolhas
 ### Desenvolvimento
 #### Linguagem: `Typescript`
@@ -54,6 +86,7 @@ O `Swagger` foi escolhido por sua integração nativa com o `NestJS`, permitindo
 Foi utilizado `mermaid` para que fique mais bonito e legível do que um documento de imagem.
 
 #### DER (Diagrama Entidade e Relacionamento)
+**Lembrando que:** O Product não será armazenado no nosos banco de dados, ele será chamado por uma API externa, porém ele terá seu tipo referente e seu service específico.
 ```mermaid
 erDiagram
     CLIENT ||--o{ FAVORITES : has
