@@ -50,8 +50,43 @@ O `Swagger` foi escolhido por sua integração nativa com o `NestJS`, permitindo
 #### CI/CD: `Github Actions`
 
 ## Planejamento
-### DER (Diagrama Entidade e Relacionamento)
+### Diagramas 
 Foi utilizado `mermaid` para que fique mais bonito e legível do que um documento de imagem.
+
+#### DER (Diagrama Entidade e Relacionamento)
+```mermaid
+erDiagram
+    CLIENT ||--o{ FAVORITES : has
+    PRODUCT ||--o{ FAVORITES : referenced_by
+
+    CLIENT {
+        uuid id PK
+        string name
+        string email
+        date createdAt
+        date updatedAt
+        date deletedAt
+    }
+
+    FAVORITES {
+        uuid id PK
+        uuid clientId FK
+        int productId
+        date createdAt
+        date deletedAt
+    }
+
+    PRODUCT {
+        int id PK
+        string title
+        float price
+        string description
+        string category
+        string image
+    }
+```
+
+#### Diagrama de classes
 ```mermaid
 classDiagram
     Client "1" --> "0..*" Favorite : possui
