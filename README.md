@@ -71,6 +71,8 @@ Neste desafio, para manter a simplicidade, incluímos também um **módulo de cl
   - `Rate-limit` será implementado para proteger endpoints críticos contra abusos ou picos de tráfego.
   - A aplicação poderá ser facilmente containerizada via Docker, permitindo reprodução consistente do ambiente de desenvolvimento e testes.
 
+- Considerando a **escalabilidade**, o serviço será considerado um microsserviço adaptável para diversos tipos de produtos provenientes de diferentes serviços, portanto existirá a tabela ***Serviço***, que será responsável por identificar de que API aquele produto é.
+
 ### Dicionário de Expressões
 - **ACID** – Conjunto de propriedades (Atomicidade, Consistência, Isolamento e Durabilidade) que garantem a confiabilidade das transações em bancos de dados relacionais.
 - **CRUD** – Acrônimo para Create, Read, Update, Delete. Representa as quatro operações básicas de persistência em um banco de dados.
@@ -143,6 +145,7 @@ Foi utilizado `mermaid` para que fique mais bonito e legível do que um document
 erDiagram
     CLIENT ||--o{ FAVORITES : has
     PRODUCT ||--o{ FAVORITES : referenced_by
+    SERVICE ||--o{ FAVORITES : has 
 
     CLIENT {
         uuid id PK
@@ -154,8 +157,9 @@ erDiagram
     }
 
     FAVORITES {
-        uuid id PK
+        int id PK
         uuid clientId FK
+        int serviceId FK
         int productId
         date createdAt
         date deletedAt
@@ -169,6 +173,15 @@ erDiagram
         string category
         string image
     }
+
+    SERVICE {
+        int id PK
+        string name
+        string url
+        date createdAt
+        date updatedAt
+        date deletedAt
+    }
 ```
 
 #### Diagrama de classes
@@ -176,7 +189,8 @@ erDiagram
 classDiagram
     Client "1" --> "0..*" Favorite : possui
     Product "1" --> "0..*" Favorite : referência
-
+    Service "1" --> "0..*" Favorite : referência
+    
     class Client {
         - id: uuid [PK]
         - nome: string
@@ -196,9 +210,9 @@ classDiagram
         - productId: int
         - createdAt: date
         - deletedAt: date
-        +getFavorites()
+        +getFavorites(serviceId)
         +getFavoriteById(favoriteId)
-        +createFavorite(productId)
+        +createFavorite(productId, serviceId)
         +deleteFavorite(favoriteId)
 
     }
@@ -211,6 +225,19 @@ classDiagram
         - review: string
         +getProducts()
         +getProductById(id)
+    }
+
+    class Service {
+        - id: uuid [PK]
+        - nome: string [Unique]
+        - url: string
+        - createdAt: date
+        - updatedAt: date
+        - deletedAt: date
+        + getServices(name)
+        + createService(name, url)
+        + updateService(serviceid, name, url)
+        + deleteService(serviceid)
     }
 ```
 
