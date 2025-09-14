@@ -1,0 +1,27 @@
+module.exports = {
+  root: true,
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: './tsconfig.eslint.json',
+    tsconfigRootDir: __dirname,
+    sourceType: 'module',
+  },
+  plugins: ['@typescript-eslint/eslint-plugin', '@nestjs/eslint-plugin'],
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@nestjs/recommended',
+    'plugin:prettier/recommended',
+  ],
+  env: {
+    node: true,
+    jest: true,
+  },
+  ignorePatterns: ['dist/', 'node_modules/', 'eslint.config.cjs'],
+  rules: {
+    '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
+  },
+};
