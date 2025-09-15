@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Role } from '../enums/Role.enum';
 
 @Entity('client')
 export class Client {
@@ -20,6 +21,9 @@ export class Client {
   @Column({ unique: true })
   email: string;
 
+  @Column()
+  role: Role;
+  
   @CreateDateColumn({ type: 'timestamp without time zone', name: 'created_at' })
   createdAt: Date;
 
