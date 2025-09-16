@@ -1,31 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { QueryRunner, DataSource } from 'typeorm';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from '../../app.module';
+import { DatabaseSeedService } from './SeedService';
 
-@Injectable()
-export class DatabaseSeedService {
-  constructor(private dataSource: DataSource) {}
+async function bootstrap() {
+  const appContext = await NestFactory.createApplicationContext(AppModule);
 
-  async run() {
-    const queryRunner: QueryRunner = this.dataSource.createQueryRunner();
+  const seeder = appContext.get(DatabaseSeedService);
+  await seeder.run();
 
-    await queryRunner.connect();
-
-    const clientTableExists = await queryRunner.hasTable('client');
-    if (clientTableExists) {
-      await queryRunner.manager.query(`
-            INSERT INTO client VALUES(id, name, email, role, created_at) VALUES
-                (1, administrador, admin@admin.test, NOW())           
-            `);
-    }
-
-    const serviceTableExists = await queryRunner.hasTable('service');
-    if (serviceTableExists) {
-      await queryRunner.manager.query(`
-            INSERT INTO service(id, name, url, created_at) VALUES
-                (1, default, https://fakestoreapi.com/products, NOW())
-            `);
-    }
-
-    await queryRunner.release();
-  }
+  await appContext.close();
 }
+bootstrap().catch((err) => {
+  console.error('Seed failed', err);
+  process.exit(1);
+});

@@ -25,6 +25,13 @@
     - [JWT](#jwt)
     - [LeftHook](#lefthook)
     - [Rate-Limit](#rate-limit)
+- [Possibilidades de Escalar](#possibilidades-de-escalar)
+  - [Arquitetura](#arquitetura)
+    - [Isolamento](#isolamento)
+    - [Flexibilidade](#flexibilidade)
+  - [Funcionalidade](#funcionalidade)
+    - [Implementação de Logger](#implementação-de-logger)
+    - [Desempenho](#desempenho)
 - [Preparando o ambiente](#preparando-o-ambiente)
   - [Instalação do Docker e Docker Compose](#instalação-do-docker-e-docker-compose)
   - [Configuração do arquivo .env](#configuração-do-arquivo-env)
@@ -33,13 +40,6 @@
   - [Subindo os containers](#subindo-os-containers)
   - [Visualizando logs](#visualizando-logs)
   - [Parando containers](#parando-containers)
-- [Possibilidades de Escalar](#possibilidades-de-escalar)
-  - [Arquitetura](#arquitetura)
-    - [Isolamento](#isolamento)
-    - [Flexibilidade](#flexibilidade)
-  - [Funcionalidade](#funcionalidade)
-    - [Implementação de Logger](#implementação-de-logger)
-    - [Desempenho](#desempenho)
 
 ---
 ## Introdução
@@ -317,6 +317,23 @@ Para proteger a API contra abusos, picos de tráfego ou ataques de negação de 
 O uso dos `DTOs` garante os atributos referidos para a rota, e o class-validator faz validações de tipo, tamanho, etc. previnindo ataques de XSS, SQL Injection, etc. Garantindo que apenas dados corretos e necessários cheguem a aplicação
 
 ---
+## Possibilidades de Escalar
+### Arquitetura
+#### Isolamento
+Uma das primeiras coisas que podemos considerar para escalar esta API é isolar a parte de clientes e de autenticação, elas não são necessárias e ainda geram complexidade desnecessária ao programa.
+
+#### Flexibilidade
+O módulo de produto pode ser explorado para utilizar mais abstrações e, talvez, tipos genéricos para que além de abrangente ele se tornasse mais maleável, mas existe possibilidade de gerar complexidade desnecessária.
+
+### Funcionalidade
+#### Implementação de Logger
+Um logger seria uma ferramenta que ajudaria muito o processo de debugging para causos complexos.
+
+#### Desempenho
+Seria possível utilizar um cache manager, o que facilitaria um feedback de como o cache está lidando com as requisições, assim podemos melhorar o desempenho dele.
+
+
+---
 ## Preparando o ambiente
 
 Antes de iniciar, certifique-se de que o Docker e o Docker Compose estão instalados na sua máquina. Você pode verificar executando:
@@ -331,12 +348,11 @@ Se não estiverem instalados, siga os links oficiais:
 - [Docker Engine (Linux)](https://docs.docker.com/engine/install/)
 
 
-Além disso, confira se existe um arquivo .env no projeto. Caso necessário, copie o exemplo:
+Além disso copie o env.example:
 ```bash
 $ cp .env.example .env
 ```
-***Se você está utilizando pelo teste do AiqFome deve colocar as credenciais de Email anexadas ao email de envio deste repositório.***
-
+> **Atenção**: Se você está utilizando este projeto pelo teste do *AiqFome*, utilize as credenciais de email fornecidas junto ao repositório (pelo email enviado). Caso contrário, configure seu próprio email (recomendado Gmail) e gere uma **senha de app** para envio de emails.
 ---
 
 ## Executando o projeto
@@ -362,20 +378,46 @@ Parar e remover containers, redes e volumes (opcional)
 ```bash
 $ docker compose down
 ```
+## Passo-a-passo de uso da aplicação
 
----
-## Possibilidades de Escalar
-### Arquitetura
-#### Isolamento
-Uma das primeiras coisas que podemos considerar para escalar esta API é isolar a parte de clientes e de autenticação, elas não são necessárias e ainda geram complexidade desnecessária ao programa.
+- O banco de dados estará limpo e rodando na porta 5432.
 
-#### Flexibilidade
-O módulo de produto pode ser explorado para utilizar mais abstrações e, talvez, tipos genéricos para que além de abrangente ele se tornasse mais maleável, mas existe possibilidade de gerar complexidade desnecessária.
+- O aplicativo estará disponível conforme configuração do Docker (ex: http://localhost:3000).
 
-### Funcionalidade
-#### Implementação de Logger
-Um logger seria uma ferramenta que ajudaria muito o processo de debugging para causos complexos.
+Rotas principais
+`Health-check`
+GET /api
+* Retorna status da API e confirma se está online.
 
-#### Desempenho
-Seria possível utilizar um cache manager, o que facilitaria um feedback de como o cache está lidando com as requisições, assim podemos melhorar o desempenho dele.
+`Documentação`
+GET /docs
 
+* Contém todas as rotas, exemplos de corpo de requisições e respostas.
+
+> Alternativamente, use a Postman Collection fornecida.
+
+`Produtos`
+GET /api/product
+
+Acesso livre, não requer autenticação.
+
+`Serviços`
+GET /api/service/
+POST /api/service/
+DELETE /api/service/:id
+
+Criar e remover serviços exige permissão de administrador.
+
+`Favoritos`
+GET /api/favorites
+POST /api/favorites
+DELETE /api/favorites/:id
+
+Requer token de autenticação.
+
+`Usuários`
+POST /api/users
+
+Criação simples: exige apenas nome e email.
+
+O acesso é **verificado via email**: o usuário receberá um token para validar e acessar o sistema.
