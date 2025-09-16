@@ -335,6 +335,11 @@ Seria possível utilizar um cache manager, o que facilitaria um feedback de como
 
 ---
 ## Preparando o ambiente
+Comece copiando o repositório com o comando
+```bash
+$ git clone https://github.com/BrunoPdOliveir4/Sistema-de-Gestao-de-Produtos-Favoritos.git
+$ cd .\Sistema-de-Gestao-de-Produtos-Favoritos\
+```
 
 Antes de iniciar, certifique-se de que o Docker e o Docker Compose estão instalados na sua máquina. Você pode verificar executando:
 ```bash
