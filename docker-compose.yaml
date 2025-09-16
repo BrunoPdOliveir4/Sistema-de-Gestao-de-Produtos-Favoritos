@@ -1,14 +1,25 @@
 services:
+  app:
+    build: .
+    container_name: tech-challenge-app
+    restart: always
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - db
 
   db:
-    image: postgres
+    image: postgres:16
+    container_name: tech-challenge-db
     restart: always
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASS}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - 5432:5432
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 

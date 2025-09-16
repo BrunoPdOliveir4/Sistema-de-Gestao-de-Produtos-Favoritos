@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+import { Mail } from 'src/common/types/Mail.type';
 
 @Injectable()
 export class MailService {
@@ -7,9 +8,9 @@ export class MailService {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com', 
+      host: 'smtp.gmail.com',
       port: 587,
-      secure: false, 
+      secure: false,
       auth: {
         user: process.env.MAIL_USER,
         pass: process.env.MAIL_KEY,
@@ -17,7 +18,9 @@ export class MailService {
     });
   }
 
-  async sendMail(to: string, subject: string, text: string, html?: string) {
+  async sendMail(mail: Mail) {
+    const {to, subject, text, html} = mail;
+
     const info = await this.transporter.sendMail({
       from: `"AiqFome" <${process.env.MAIL_USER}>`,
       to,
@@ -27,5 +30,19 @@ export class MailService {
     });
 
     return info;
+  }
+
+  prepareVerificationEmail(email:string, token: string): Mail{
+    return {
+      to: email,
+      subject: "AiqFome (Desafio tecnico) - Recebimento de chave de API",
+      text: `A sua API Key para registro de favoritos, recebimento de produtos por nossas rotas é: ${token}`,
+      html: ''
+    }
+  }
+
+  async sendVerificationEmail(email: string, token:string){
+    const verificationMail = this.prepareVerificationEmail(email, token);
+    this.sendMail(verificationMail);
   }
 }

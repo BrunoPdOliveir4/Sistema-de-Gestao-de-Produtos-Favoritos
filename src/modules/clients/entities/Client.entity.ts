@@ -23,7 +23,7 @@ export class Client {
 
   @Column()
   role: Role;
-  
+
   @CreateDateColumn({ type: 'timestamp without time zone', name: 'created_at' })
   createdAt: Date;
 

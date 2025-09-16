@@ -15,7 +15,7 @@ export class ClientRepository {
     return this.repository.findOne({ where: { id } });
   }
 
-  async findByEmail(email:string): Promise<Client | null> {
+  async findByEmail(email: string): Promise<Client | null> {
     return this.repository.findOne({ where: { email } });
   }
 

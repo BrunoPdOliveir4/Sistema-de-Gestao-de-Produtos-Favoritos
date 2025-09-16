@@ -10,22 +10,21 @@ export class DatabaseSeedService {
 
     await queryRunner.connect();
 
-    const clientTableExists = await queryRunner.hasTable("client");
-    if(clientTableExists){
-        await queryRunner.manager.query(`
+    const clientTableExists = await queryRunner.hasTable('client');
+    if (clientTableExists) {
+      await queryRunner.manager.query(`
             INSERT INTO client VALUES(id, name, email, role, created_at) VALUES
                 (1, administrador, admin@admin.test, NOW())           
-            `)
-    }
-    
-    const serviceTableExists = await queryRunner.hasTable("service");
-    if(serviceTableExists){
-        await queryRunner.manager.query(`
-            INSERT INTO service(id, name, url, created_at) VALUES
-                (1, default, https://fakestoreapi.com/products, NOW())
-            `)
+            `);
     }
 
+    const serviceTableExists = await queryRunner.hasTable('service');
+    if (serviceTableExists) {
+      await queryRunner.manager.query(`
+            INSERT INTO service(id, name, url, created_at) VALUES
+                (1, default, https://fakestoreapi.com/products, NOW())
+            `);
+    }
 
     await queryRunner.release();
   }
