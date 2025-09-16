@@ -30,20 +30,20 @@ export class ProductService {
 
   async getProductById(name: string, productId: string) {
     const service = await this.serviceService.findByName(name);
-    const product = await this.requestById(service.url, productId)
+    const product = await this.requestById(service.url, productId);
     return product;
   }
 
-  async verifyProductExists(serviceId:string, productId:string){
+  async verifyProductExists(serviceId: string, productId: string) {
     const service = await this.serviceService.findById(serviceId);
     const product = await this.requestById(service.url, productId);
     return product;
   }
 
-  async requestById(url, id){
+  async requestById(url, id) {
     try {
-      const response = await firstValueFrom( this.axios.get(`${url}/${id}`));
-      
+      const response = await firstValueFrom(this.axios.get(`${url}/${id}`));
+
       if (response.status !== 200) {
         throw new BadRequestException('Url inválida!');
       }
@@ -52,22 +52,20 @@ export class ProductService {
       }
 
       return response.data;
-
-    } catch(error) {
-    if (error instanceof BadRequestException) {
-      throw error;
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new BadRequestException('Não foi possível acessar a URL!');
     }
-    throw new BadRequestException('Não foi possível acessar a URL!');
-  }
   }
 
   isEmpty(value: any): boolean {
-    if (!value) return true; 
+    if (!value) return true;
 
     if (Array.isArray(value)) return value.length === 0;
     if (typeof value === 'object') return Object.keys(value).length === 0;
 
     return false;
   }
-
 }

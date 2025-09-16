@@ -1,4 +1,9 @@
-import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { FavoriteRepository } from '../repositories/Favorite.repository';
 import { ProductService } from '../../products/services/Product.service';
 import { Favorite } from '../entities/Favorite.entity';
@@ -29,19 +34,21 @@ export class FavoriteService {
     return filteredProducts;
   }
 
-  async getFavoriteById(id:string){
+  async getFavoriteById(id: string) {
     const favorite = await this.repository.find(id);
-    if(!favorite) throw new NotFoundException("Favorite not Found!")
+    if (!favorite) throw new NotFoundException('Favorite not Found!');
     return favorite;
   }
 
   async deleteFavorite(id, userId) {
     const favorite = await this.getFavoriteById(id);
-    if(favorite.client.id === userId){
+    if (favorite.client.id === userId) {
       await this.repository.delete(id);
       return;
     }
-    throw new ForbiddenException("Você não tem permissão para deletar este favorito.")
+    throw new ForbiddenException(
+      'Você não tem permissão para deletar este favorito.',
+    );
   }
 
   //Funções auxiliares do GET
@@ -82,8 +89,11 @@ export class FavoriteService {
       favoriteProductIds.has(String(product.id)),
     );
   }
-  
-  private async ensureFavoriteDoesNotExist(clientId: string, data: CreateFavoriteDto) {
+
+  private async ensureFavoriteDoesNotExist(
+    clientId: string,
+    data: CreateFavoriteDto,
+  ) {
     const exists = await this.repository.findClientFavoriteExists(
       data.serviceId,
       data.productId,
@@ -119,6 +129,4 @@ export class FavoriteService {
       favoriteId,
     };
   }
-
-  
 }

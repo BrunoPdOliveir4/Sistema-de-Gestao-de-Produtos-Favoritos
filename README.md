@@ -17,7 +17,6 @@
     - [Banco de Dados: Postgres](#banco-de-dados-postgres)
     - [Docker: Banco de dados](#docker-banco-de-dados)
     - [Documentação: Swagger](#documentação-swagger)
-    - [CI/CD: Github Actions](#cicd-github-actions)
 - [Planejamento](#planejamento)
   - [Diagramas](#diagramas)
     - [DER (Diagrama Entidade e Relacionamento)](#der-diagrama-entidade-e-relacionamento)
@@ -26,7 +25,21 @@
     - [JWT](#jwt)
     - [LeftHook](#lefthook)
     - [Rate-Limit](#rate-limit)
-
+- [Preparando o ambiente](#preparando-o-ambiente)
+  - [Instalação do Docker e Docker Compose](#instalação-do-docker-e-docker-compose)
+  - [Configuração do arquivo .env](#configuração-do-arquivo-env)
+- [Executando o projeto](#executando-o-projeto)
+  - [Construindo as imagens](#construindo-as-imagens)
+  - [Subindo os containers](#subindo-os-containers)
+  - [Visualizando logs](#visualizando-logs)
+  - [Parando containers](#parando-containers)
+- [Possibilidades de Escalar](#possibilidades-de-escalar)
+  - [Arquitetura](#arquitetura)
+    - [Isolamento](#isolamento)
+    - [Flexibilidade](#flexibilidade)
+  - [Funcionalidade](#funcionalidade)
+    - [Implementação de Logger](#implementação-de-logger)
+    - [Desempenho](#desempenho)
 
 ---
 ## Introdução
@@ -174,10 +187,12 @@ Comparado ao `MySQL`, o PostgreSQL suporta tipos avançados como `JSONB`, arrays
 #### Docker: `Banco de dados`
 O uso do Docker para o banco de dados garante um ambiente isolado, reproduzível e consistente, evitando conflitos de dependências com o sistema local. Isso facilita o desenvolvimento e os testes e garante que a API vai funcionar da mesma forma em diferentes ambientes. Em um cenário de produção, a solução poderia ser facilmente adaptada para um serviço de banco de dados em nuvem, como o AWS RDS, por exemplo, sem grandes alterações na aplicação.
 
+#### Docker: `Aplicação`
+O Docker também foi utilizado para a aplicação, garantindo consistência entre ambientes de desenvolvimento, testes e produção. Com isso, toda a equipe pode rodar a aplicação localmente da mesma forma que será executada em produção, eliminando problemas de configuração e dependências divergentes.
+Além disso, o Docker facilita a orquestração de múltiplos serviços, como a API, o banco de dados e filas de processamento, permitindo escalabilidade e deploy automatizado com ferramentas como Docker Compose ou Kubernetes.
+
 #### Documentação: `Swagger`
 O `Swagger` foi escolhido por sua integração nativa com o `NestJS`, permitindo que as rotas da API sejam identificadas e descritas de forma automática e padronizada. Além disso, gera uma página de documentação clara e interativa, facilitando o entendimento e a utilização da API por outros desenvolvedores ou sistemas que precisarão integrá-la. Essa abordagem aumenta a transparência, a manutenibilidade e a eficiência na comunicação entre equipes e sistemas.
-
-#### CI/CD: `Github Actions`
 
 ---
 
@@ -303,18 +318,51 @@ O uso dos `DTOs` garante os atributos referidos para a rota, e o class-validator
 
 ---
 ## Preparando o ambiente
-Garanta que o docker está instalado na máquina:
-...
 
----
-## Executando
+Antes de iniciar, certifique-se de que o Docker e o Docker Compose estão instalados na sua máquina. Você pode verificar executando:
 ```bash
-$ docker compose build 
+$ docker --version
+$ docker compose version
 ```
 
+Se não estiverem instalados, siga os links oficiais:
+
+- [Docker Desktop (Windows/macOS)](https://www.docker.com/products/docker-desktop/)
+- [Docker Engine (Linux)](https://docs.docker.com/engine/install/)
+
+
+Além disso, confira se existe um arquivo .env no projeto. Caso necessário, copie o exemplo:
+```bash
+$ cp .env.example .env
+```
+***Se você está utilizando pelo teste do AiqFome deve colocar as credenciais de Email anexadas ao email de envio deste repositório.***
+
+---
+
+## Executando o projeto
+
+Construir as imagens do Docker
+```bash
+$ docker compose build
+```
+> Isso vai ler os Dockerfiles do projeto e criar as imagens necessárias.
+
+Subir os containers em modo destacado
 ```bash
 $ docker compose up -d
 ```
+> O -d faz com que os containers rodem em segundo plano.
+
+Para ver os logs em tempo real, use:
+```bash
+$ docker compose logs -f
+```
+
+Parar e remover containers, redes e volumes (opcional)
+```bash
+$ docker compose down
+```
+
 ---
 ## Possibilidades de Escalar
 ### Arquitetura

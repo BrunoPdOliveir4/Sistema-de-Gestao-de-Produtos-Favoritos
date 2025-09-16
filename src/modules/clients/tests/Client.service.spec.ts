@@ -40,7 +40,9 @@ describe('ClientService', () => {
 
     it('deve lançar NotFoundException se o cliente não existir', async () => {
       (repository.find as jest.Mock).mockResolvedValue(null);
-      await expect(clientService.find('999')).rejects.toThrow(NotFoundException);
+      await expect(clientService.find('999')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -53,7 +55,9 @@ describe('ClientService', () => {
 
     it('deve lançar NotFoundException se o cliente não existir', async () => {
       (repository.findByEmail as jest.Mock).mockResolvedValue(null);
-      await expect(clientService.findByEmail('desconhecido@example.com')).rejects.toThrow(NotFoundException);
+      await expect(
+        clientService.findByEmail('desconhecido@example.com'),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 
@@ -69,14 +73,18 @@ describe('ClientService', () => {
     });
 
     it('deve lançar NotFoundException se o email não for fornecido', async () => {
-      await expect(clientService.create({ name: 'Sem Email' })).rejects.toThrow(NotFoundException);
+      await expect(clientService.create({ name: 'Sem Email' })).rejects.toThrow(
+        NotFoundException,
+      );
     });
 
     it('deve lançar BadRequestException se o email já existir', async () => {
       const dto = { email: 'teste@example.com', name: 'Teste' };
       (repository.findByEmail as jest.Mock).mockResolvedValue(mockClient);
 
-      await expect(clientService.create(dto)).rejects.toThrow(BadRequestException);
+      await expect(clientService.create(dto)).rejects.toThrow(
+        BadRequestException,
+      );
     });
   });
 
@@ -87,7 +95,9 @@ describe('ClientService', () => {
 
       const result = await clientService.update('1', { name: 'Atualizado' });
       expect(result).toEqual(updateResult);
-      expect(repository.update).toHaveBeenCalledWith('1', { name: 'Atualizado' });
+      expect(repository.update).toHaveBeenCalledWith('1', {
+        name: 'Atualizado',
+      });
     });
   });
 

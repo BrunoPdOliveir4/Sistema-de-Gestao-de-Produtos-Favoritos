@@ -15,7 +15,11 @@ export class AuthController {
     description: 'Email do usuário para gerar o token',
     example: 'usuario@email.com',
   })
-  @ApiResponse({ status: 200, description: 'JWT gerado com sucesso.', schema: { example: { token: 'eyJhbGciOiJIUzI1...' } } })
+  @ApiResponse({
+    status: 200,
+    description: 'JWT gerado com sucesso.',
+    schema: { example: { token: 'eyJhbGciOiJIUzI1...' } },
+  })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado.' })
   async getNewJwt(@Param('email') email: GetTokenDto) {
     return this.service.getNewJwt(email);

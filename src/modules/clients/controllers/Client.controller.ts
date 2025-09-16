@@ -7,7 +7,12 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ClientService } from '../services/Client.service';
 import { CreateClientDto } from '../dtos/CreateClient.dto';
 import { Role } from '../enums/Role.enum';
@@ -23,7 +28,10 @@ export class ClientController {
   @ApiBearerAuth()
   @Get()
   @ApiOperation({ summary: 'Retorna os dados do usuário logado' })
-  @ApiResponse({ status: 200, description: 'Dados do usuário retornados com sucesso.' })
+  @ApiResponse({
+    status: 200,
+    description: 'Dados do usuário retornados com sucesso.',
+  })
   async getMe(@UserId() id: string) {
     return this.service.find(id);
   }

@@ -10,7 +10,12 @@ describe('ServiceService', () => {
   let repository: ServiceRepository;
   let httpService: HttpService;
 
-  const mockService = { id: '1', name: 'Teste', url: 'http://teste.com', createdAt: new Date() };
+  const mockService = {
+    id: '1',
+    name: 'Teste',
+    url: 'http://teste.com',
+    createdAt: new Date(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -57,7 +62,9 @@ describe('ServiceService', () => {
 
     it('deve lançar NotFoundException se o serviço não existir', async () => {
       (repository.findById as jest.Mock).mockResolvedValue(null);
-      await expect(serviceService.findById('999')).rejects.toThrow(NotFoundException);
+      await expect(serviceService.findById('999')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -70,7 +77,9 @@ describe('ServiceService', () => {
 
     it('deve lançar NotFoundException se o serviço não existir', async () => {
       (repository.findByName as jest.Mock).mockResolvedValue(null);
-      await expect(serviceService.findByName('Desconhecido')).rejects.toThrow(NotFoundException);
+      await expect(serviceService.findByName('Desconhecido')).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 
@@ -84,19 +93,27 @@ describe('ServiceService', () => {
 
       const result = await serviceService.create(dto);
       expect(result).toEqual(mockService);
-      expect(repository.create).toHaveBeenCalledWith(expect.objectContaining(dto));
+      expect(repository.create).toHaveBeenCalledWith(
+        expect.objectContaining(dto),
+      );
     });
 
     it('deve lançar BadRequestException se a URL for inválida', async () => {
-      (httpService.get as jest.Mock).mockReturnValue(throwError(() => new Error('fail')));
-      await expect(serviceService.create(dto)).rejects.toThrow(BadRequestException);
+      (httpService.get as jest.Mock).mockReturnValue(
+        throwError(() => new Error('fail')),
+      );
+      await expect(serviceService.create(dto)).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('deve lançar BadRequestException se já existir um serviço com o mesmo nome', async () => {
       (httpService.get as jest.Mock).mockReturnValue(of({ status: 200 }));
       (repository.findByName as jest.Mock).mockResolvedValue(mockService);
 
-      await expect(serviceService.create(dto)).rejects.toThrow(BadRequestException);
+      await expect(serviceService.create(dto)).rejects.toThrow(
+        BadRequestException,
+      );
     });
   });
 

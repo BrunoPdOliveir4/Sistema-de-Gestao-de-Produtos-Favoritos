@@ -29,10 +29,14 @@ export class FavoriteRepository {
   async findClientFavoriteExists(
     serviceId,
     productId,
-    clientId
+    clientId,
   ): Promise<Favorite | null> {
     return this.repository.findOne({
-      where: { service: { id: serviceId }, productId, client: {id: clientId} },
+      where: {
+        service: { id: serviceId },
+        productId,
+        client: { id: clientId },
+      },
       relations: ['service'],
     });
   }
