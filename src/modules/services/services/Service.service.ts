@@ -19,6 +19,12 @@ export class ServiceService {
     return this.repository.findAll();
   }
 
+  async findById(id: string): Promise<Service> {
+    const service = await this.repository.findById(id);
+    if (!service) throw new NotFoundException('Serviço não encontrado');
+    return service;
+  }
+
   async findByName(name: string): Promise<Service> {
     const service = await this.repository.findByName(name);
     if (!service) throw new NotFoundException('Serviço não encontrado');
@@ -35,17 +41,17 @@ export class ServiceService {
     try {
       const response = await firstValueFrom(this.axios.get(url));
       if (response.status !== 200) {
-        throw new BadRequestException("Url inválida!");
+        throw new BadRequestException('Url inválida!');
       }
     } catch {
-      throw new BadRequestException("Não foi possível acessar a URL!");
+      throw new BadRequestException('Não foi possível acessar a URL!');
     }
   }
 
   private async ensureUniqueName(name: string) {
     const serviceExists = await this.repository.findByName(name);
     if (serviceExists) {
-      throw new BadRequestException("Já existe um serviço com esse nome!");
+      throw new BadRequestException('Já existe um serviço com esse nome!');
     }
   }
 
@@ -56,9 +62,7 @@ export class ServiceService {
     });
   }
 
-
   async delete(id: string) {
     return await this.repository.delete(id);
   }
-
 }

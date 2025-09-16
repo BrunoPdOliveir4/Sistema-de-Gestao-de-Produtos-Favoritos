@@ -1,5 +1,5 @@
-import { Client } from 'src/modules/clients/entities/Client.entity';
-import { Service } from 'src/modules/services/entities/Service.entity';
+import { Client } from '../../clients/entities/Client.entity';
+import { Service } from '../../services/entities/Service.entity';
 import {
   Column,
   CreateDateColumn,

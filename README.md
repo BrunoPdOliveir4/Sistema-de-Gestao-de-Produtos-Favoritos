@@ -17,7 +17,6 @@
     - [Banco de Dados: Postgres](#banco-de-dados-postgres)
     - [Docker: Banco de dados](#docker-banco-de-dados)
     - [Documentação: Swagger](#documentação-swagger)
-    - [CI/CD: Github Actions](#cicd-github-actions)
 - [Planejamento](#planejamento)
   - [Diagramas](#diagramas)
     - [DER (Diagrama Entidade e Relacionamento)](#der-diagrama-entidade-e-relacionamento)
@@ -26,7 +25,21 @@
     - [JWT](#jwt)
     - [LeftHook](#lefthook)
     - [Rate-Limit](#rate-limit)
-
+- [Possibilidades de Escalar](#possibilidades-de-escalar)
+  - [Arquitetura](#arquitetura)
+    - [Isolamento](#isolamento)
+    - [Flexibilidade](#flexibilidade)
+  - [Funcionalidade](#funcionalidade)
+    - [Implementação de Logger](#implementação-de-logger)
+    - [Desempenho](#desempenho)
+- [Preparando o ambiente](#preparando-o-ambiente)
+  - [Instalação do Docker e Docker Compose](#instalação-do-docker-e-docker-compose)
+  - [Configuração do arquivo .env](#configuração-do-arquivo-env)
+- [Executando o projeto](#executando-o-projeto)
+  - [Construindo as imagens](#construindo-as-imagens)
+  - [Subindo os containers](#subindo-os-containers)
+  - [Visualizando logs](#visualizando-logs)
+  - [Parando containers](#parando-containers)
 
 ---
 ## Introdução
@@ -120,6 +133,52 @@ Outras ferramentas, como `Mocha` ou `Jasmine`, poderiam ser utilizadas, mas exig
 
 ### Infraestrutura
 
+#### Estrutura de Pastas
+```
+src
+├───common
+│   └───types
+├───config
+├───infrastructure
+│   ├───auth
+│   │   ├───controller
+│   │   ├───dto
+│   │   ├───guards
+│   │   └───services
+│   ├───database
+│   ├───decorators
+│   ├───mail
+│   │   └───service
+│   └───middleware
+└───modules
+    ├───clients
+    │   ├───controllers
+    │   ├───dtos
+    │   ├───entities
+    │   ├───enums
+    │   ├───repositories
+    │   └───services
+    ├───favorites
+    │   ├───controllers
+    │   ├───dtos
+    │   ├───entities
+    │   ├───repositories
+    │   ├───services
+    │   └───types
+    ├───products
+    │   ├───controllers
+    │   └───services
+    └───services
+        ├───controllers
+        ├───dtos
+        ├───entities
+        ├───repositories
+        └───services
+```
+A aplicação segue o padrão do NestJS, organizada em módulos que representam domínios específicos do sistema. Cada módulo possui suas próprias camadas: controllers, responsáveis pelo roteamento e recebimento das requisições; services, que contêm a lógica de negócio e orquestram operações; e repositories, que fazem a comunicação com o banco de dados. Essa separação garante que cada componente tenha uma única responsabilidade, facilitando a manutenção, escalabilidade e testabilidade da aplicação.
+
+Além disso, a aplicação utiliza DTOs para validação e limitação dos dados trafegados entre cliente e servidor, types e enums para padronização e consistência de dados, e entities que representam as tabelas do banco de dados, servindo como modelos de persistência. A infraestrutura, que inclui autenticação, banco de dados, envio de emails e middlewares, é organizada separadamente, isolando a lógica técnica do domínio do negócio e permitindo maior reutilização e organização do código.
+
 #### Banco de Dados: `postgres`
 O PostgreSQL foi escolhido não apenas por ser o preferencial do desafio, mas também por suas vantagens técnicas sobre alternativas como `MongoDB` e `MySQL`. Em relação a bancos NoSQL como o `MongoDB`, ele oferece suporte a transações `ACID`, garantindo consistência e confiabilidade dos dados, o que é fundamental para que os produtos favoritos de um cliente estejam sempre corretos.
 
@@ -128,10 +187,12 @@ Comparado ao `MySQL`, o PostgreSQL suporta tipos avançados como `JSONB`, arrays
 #### Docker: `Banco de dados`
 O uso do Docker para o banco de dados garante um ambiente isolado, reproduzível e consistente, evitando conflitos de dependências com o sistema local. Isso facilita o desenvolvimento e os testes e garante que a API vai funcionar da mesma forma em diferentes ambientes. Em um cenário de produção, a solução poderia ser facilmente adaptada para um serviço de banco de dados em nuvem, como o AWS RDS, por exemplo, sem grandes alterações na aplicação.
 
+#### Docker: `Aplicação`
+O Docker também foi utilizado para a aplicação, garantindo consistência entre ambientes de desenvolvimento, testes e produção. Com isso, toda a equipe pode rodar a aplicação localmente da mesma forma que será executada em produção, eliminando problemas de configuração e dependências divergentes.
+Além disso, o Docker facilita a orquestração de múltiplos serviços, como a API, o banco de dados e filas de processamento, permitindo escalabilidade e deploy automatizado com ferramentas como Docker Compose ou Kubernetes.
+
 #### Documentação: `Swagger`
 O `Swagger` foi escolhido por sua integração nativa com o `NestJS`, permitindo que as rotas da API sejam identificadas e descritas de forma automática e padronizada. Além disso, gera uma página de documentação clara e interativa, facilitando o entendimento e a utilização da API por outros desenvolvedores ou sistemas que precisarão integrá-la. Essa abordagem aumenta a transparência, a manutenibilidade e a eficiência na comunicação entre equipes e sistemas.
-
-#### CI/CD: `Github Actions`
 
 ---
 
@@ -256,10 +317,107 @@ Para proteger a API contra abusos, picos de tráfego ou ataques de negação de 
 O uso dos `DTOs` garante os atributos referidos para a rota, e o class-validator faz validações de tipo, tamanho, etc. previnindo ataques de XSS, SQL Injection, etc. Garantindo que apenas dados corretos e necessários cheguem a aplicação
 
 ---
-## Preparando o ambiente
+## Possibilidades de Escalar
+### Arquitetura
+#### Isolamento
+Uma das primeiras coisas que podemos considerar para escalar esta API é isolar a parte de clientes e de autenticação, elas não são necessárias e ainda geram complexidade desnecessária ao programa.
+
+#### Flexibilidade
+O módulo de produto pode ser explorado para utilizar mais abstrações e, talvez, tipos genéricos para que além de abrangente ele se tornasse mais maleável, mas existe possibilidade de gerar complexidade desnecessária.
+
+### Funcionalidade
+#### Implementação de Logger
+Um logger seria uma ferramenta que ajudaria muito o processo de debugging para causos complexos.
+
+#### Desempenho
+Seria possível utilizar um cache manager, o que facilitaria um feedback de como o cache está lidando com as requisições, assim podemos melhorar o desempenho dele.
+
 
 ---
-## Executando
+## Preparando o ambiente
+
+Antes de iniciar, certifique-se de que o Docker e o Docker Compose estão instalados na sua máquina. Você pode verificar executando:
+```bash
+$ docker --version
+$ docker compose version
+```
+
+Se não estiverem instalados, siga os links oficiais:
+
+- [Docker Desktop (Windows/macOS)](https://www.docker.com/products/docker-desktop/)
+- [Docker Engine (Linux)](https://docs.docker.com/engine/install/)
 
 
-> A escrever.
+Além disso copie o env.example:
+```bash
+$ cp .env.example .env
+```
+> **Atenção**: Se você está utilizando este projeto pelo teste do *AiqFome*, utilize as credenciais de email fornecidas junto ao repositório (pelo email enviado). Caso contrário, configure seu próprio email (recomendado Gmail) e gere uma **senha de app** para envio de emails.
+---
+
+## Executando o projeto
+
+Construir as imagens do Docker
+```bash
+$ docker compose build
+```
+> Isso vai ler os Dockerfiles do projeto e criar as imagens necessárias.
+
+Subir os containers em modo destacado
+```bash
+$ docker compose up -d
+```
+> O -d faz com que os containers rodem em segundo plano.
+
+Para ver os logs em tempo real, use:
+```bash
+$ docker compose logs -f
+```
+
+Parar e remover containers, redes e volumes (opcional)
+```bash
+$ docker compose down
+```
+## Passo-a-passo de uso da aplicação
+
+- O banco de dados estará limpo e rodando na porta 5432.
+
+- O aplicativo estará disponível conforme configuração do Docker (ex: http://localhost:3000).
+
+Rotas principais
+`Health-check`
+GET /api
+* Retorna status da API e confirma se está online.
+
+`Documentação`
+GET /docs
+
+* Contém todas as rotas, exemplos de corpo de requisições e respostas.
+
+> Alternativamente, use a Postman Collection fornecida.
+
+`Produtos`
+GET /api/product
+
+Acesso livre, não requer autenticação.
+
+`Serviços`
+GET /api/service/
+POST /api/service/
+DELETE /api/service/:id
+
+Criar e remover serviços exige permissão de administrador.
+
+`Favoritos`
+GET /api/favorites
+POST /api/favorites
+DELETE /api/favorites/:id
+
+Requer token de autenticação.
+
+`Usuários`
+POST /api/users
+
+Criação simples: exige apenas nome e email.
+
+O acesso é **verificado via email**: o usuário receberá um token para validar e acessar o sistema.
