@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Service } from '../entities/Service.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateResult } from 'typeorm/browser';
@@ -18,6 +18,11 @@ export class ServiceRepository {
   async findById(id: string): Promise<Service | null> {
     return this.repository.findOne({ where: { id } });
   }
+
+  async findByIds(ids: string[]): Promise<Service[]> {
+  return this.repository.find({
+    where: { id: In(ids) },
+  })}
 
   async findByName(name: string): Promise<Service | null> {
     return this.repository.findOne({ where: { name } });

@@ -15,7 +15,6 @@ import { RolesGuard } from 'src/infrastructure/auth/guards/Roles.guard';
 import { Roles } from 'src/infrastructure/decorators/Roles.decorator';
 import { Role } from 'src/modules/clients/enums/Role.enum';
 
-//**A proposta é no futuro fazer roles e, apenas o findAll e findByName serão públicas. */
 @Controller('service')
 export class ServiceController {
   constructor(private readonly service: ServiceService) {}
@@ -30,6 +29,8 @@ export class ServiceController {
     return this.service.findByName(name);
   }
 
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   @Post()
   async create(@Body() data: CreateServiceDto) {
     return this.service.create(data);

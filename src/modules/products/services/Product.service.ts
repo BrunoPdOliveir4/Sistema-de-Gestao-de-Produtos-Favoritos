@@ -1,8 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { ServiceService } from 'src/modules/services/services/Service.service';
-
 
 @Injectable()
 export class ProductService {
@@ -22,12 +21,27 @@ export class ProductService {
     return response.data;
   }
 
-  async getProductById(name: string, id: string) {
+  async getProductById(name: string, productId: string) {
     const service = await this.serviceService.findByName(name);
-    const response = await firstValueFrom(
-      this.axios.get(`${service.url}/${id}`),
-    );
-    return response.data;
+    const product = await this.requestById(service.url, productId)
+    return product;
   }
-  
+
+  async verifyProductExists(serviceId:string, productId:string){
+    const service = await this.serviceService.findById(serviceId);
+    await this.requestById(service.url, productId);
+    return; // Não preciso retornar nada porque não salvo dados do produto
+  }
+
+  async requestById(url, id){
+    try {
+      const response = await firstValueFrom( this.axios.get(`${url}/${id}`));
+      if (response.status !== 200) {
+        throw new BadRequestException('Url inválida!');
+      }
+      return response.data;
+    } catch {
+      throw new BadRequestException('Não foi possível acessar a URL!');
+    }
+  }
 }

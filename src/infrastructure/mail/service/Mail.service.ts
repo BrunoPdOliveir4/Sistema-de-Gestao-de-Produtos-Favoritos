@@ -19,7 +19,7 @@ export class MailService {
   }
 
   async sendMail(mail: Mail) {
-    const {to, subject, text, html} = mail;
+    const { to, subject, text, html } = mail;
 
     const info = await this.transporter.sendMail({
       from: `"AiqFome" <${process.env.MAIL_USER}>`,
@@ -32,16 +32,16 @@ export class MailService {
     return info;
   }
 
-  prepareVerificationEmail(email:string, token: string): Mail{
+  prepareVerificationEmail(email: string, token: string): Mail {
     return {
       to: email,
-      subject: "AiqFome (Desafio tecnico) - Recebimento de chave de API",
+      subject: 'AiqFome (Desafio tecnico) - Recebimento de chave de API',
       text: `A sua API Key para registro de favoritos, recebimento de produtos por nossas rotas é: ${token}`,
-      html: ''
-    }
+      html: '',
+    };
   }
 
-  async sendVerificationEmail(email: string, token:string){
+  async sendVerificationEmail(email: string, token: string) {
     const verificationMail = this.prepareVerificationEmail(email, token);
     this.sendMail(verificationMail);
   }

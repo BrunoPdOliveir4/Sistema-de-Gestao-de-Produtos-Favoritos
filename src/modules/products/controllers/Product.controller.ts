@@ -8,7 +8,7 @@ import { Throttle } from '@nestjs/throttler';
 export class ProductController {
   constructor(private readonly service: ProductService) {}
 
-  @Throttle({default: {limit: 2,ttl: 60000}})
+  @Throttle({ default: { limit: 2, ttl: 60000 } })
   @Get()
   async getProductsFromDefaultService(
     @Query('limit') limit: number = 10,

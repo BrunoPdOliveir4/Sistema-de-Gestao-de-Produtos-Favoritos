@@ -18,7 +18,7 @@ export class ClientService {
     return client;
   }
 
-  async findByEmail(email:string): Promise<Client> {
+  async findByEmail(email: string): Promise<Client> {
     const client = await this.repository.findByEmail(email);
     if (!client) throw new NotFoundException('Client não encontrado');
     return client;

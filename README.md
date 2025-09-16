@@ -257,9 +257,31 @@ O uso dos `DTOs` garante os atributos referidos para a rota, e o class-validator
 
 ---
 ## Preparando o ambiente
+Garanta que o docker está instalado na máquina:
+...
 
 ---
 ## Executando
+```bash
+$ docker compose build 
+```
 
+```bash
+$ docker compose up -d
+```
+---
+## Possibilidades de Escalar
+### Arquitetura
+#### Isolamento
+Uma das primeiras coisas que podemos considerar para escalar esta API é isolar a parte de clientes e de autenticação, elas não são necessárias e ainda geram complexidade desnecessária ao programa.
 
-> A escrever.
+#### Flexibilidade
+O módulo de produto pode ser explorado para utilizar mais abstrações e, talvez, tipos genéricos para que além de abrangente ele se tornasse mais maleável, mas existe possibilidade de gerar complexidade desnecessária.
+
+### Funcionalidade
+#### Implementação de Logger
+Um logger seria uma ferramenta que ajudaria muito o processo de debugging para causos complexos.
+
+#### Desempenho
+Seria possível utilizar um cache manager, o que facilitaria um feedback de como o cache está lidando com as requisições, assim podemos melhorar o desempenho dele.
+

@@ -20,7 +20,6 @@ function extractUser(ctx: ExecutionContext): any {
     const jwtService = new JwtService({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '1y' },
-      
     });
 
     return jwtService.verify(token);
