@@ -3,6 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { ServiceService } from 'src/modules/services/services/Service.service';
 
+
 @Injectable()
 export class ProductService {
   constructor(
@@ -28,4 +29,5 @@ export class ProductService {
     );
     return response.data;
   }
+  
 }
