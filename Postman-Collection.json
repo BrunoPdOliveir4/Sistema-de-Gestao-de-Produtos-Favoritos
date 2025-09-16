@@ -1,0 +1,336 @@
+{
+	"info": {
+		"_postman_id": "e9078702-03aa-4281-b1a8-925f3395cf26",
+		"name": "Magalu - Aiqfome",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34874310",
+		"_collection_link": "https://sqe-3-projectmanager.postman.co/workspace/SQE-3---ProjectManager-Workspac~0f6f87db-99e8-44ac-8e45-ade07ba579e0/collection/34874310-e9078702-03aa-4281-b1a8-925f3395cf26?action=share&source=collection_link&creator=34874310"
+	},
+	"item": [
+		{
+			"name": "Serviços",
+			"item": [
+				{
+					"name": "Registrar Serviço",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"default\",\r\n    \"url\": \"https://fakestoreapi.com/products/\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/service/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"service",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Receber Todos Serviços",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/service/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"service",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Serviço",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/service/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"service",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "Registrar Cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Bruno\",\r\n    \"email\": \"bpedrosodroliveira10@gmail.com\",\r\n    \"role\": \"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/client/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"client",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Client",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlODczODc3OC02MjFkLTRkZDktODZkNy05ZWIyOTE4NTAzNzgiLCJlbWFpbCI6ImJwZWRyb3NvZHJvbGl2ZWlyYTEwQGdtYWlsLmNvbSIsInJvbGUiOjAsImlhdCI6MTc1Nzk3MTA4OCwiZXhwIjoxNzg5NTI4Njg4fQ.N3s6AXrRBuAEVwszcopoBzIiyxkKwV4XoKUjpbYPZdk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/client/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"client",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Receber Client",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0YTEyOTE5Ny05ZmQxLTQ2MjctOTdiNC00YWY3Zjg2NTBiYWEiLCJlbWFpbCI6ImJwZWRyb3NvZHJvbGl2ZWlyYTEwQGdtYWlsLmNvbSIsInJvbGUiOjAsImlhdCI6MTc1Nzk4MTM0NywiZXhwIjoxNzg5NTM4OTQ3fQ.Z-TIHEAk5lGB0Ot9zuPPfsh1hZl5fY2rjwhfjQOnqSs",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/client/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"client",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Receber token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/auth/bpedrosodroliveira10@gmail.com",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"bpedrosodroliveira10@gmail.com"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Favoritos",
+			"item": [
+				{
+					"name": "Criar favorito",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4ZjJmZDQ2MS01Zjk4LTRiZjItYWUzNi0wZjVmMWY1MTgwYjYiLCJlbWFpbCI6ImJwZWRyb3NvZHJvbGl2ZWlyYTEwQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1ODAzMjQyNSwiZXhwIjoxNzg5NTkwMDI1fQ.Kd2fVSdKX9yLSmrL_726nI1rlDlZ2c0Q4HXW5hEF1rU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"serviceId\": \"2\",\r\n    \"productId\": \"8\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/favorite",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"favorite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Favorito",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4ZjJmZDQ2MS01Zjk4LTRiZjItYWUzNi0wZjVmMWY1MTgwYjYiLCJlbWFpbCI6ImJwZWRyb3NvZHJvbGl2ZWlyYTEwQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1ODAzMjQyNSwiZXhwIjoxNzg5NTkwMDI1fQ.Kd2fVSdKX9yLSmrL_726nI1rlDlZ2c0Q4HXW5hEF1rU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/favorite/10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"favorite",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4ZjJmZDQ2MS01Zjk4LTRiZjItYWUzNi0wZjVmMWY1MTgwYjYiLCJlbWFpbCI6ImJwZWRyb3NvZHJvbGl2ZWlyYTEwQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc1ODAzMjQyNSwiZXhwIjoxNzg5NTkwMDI1fQ.Kd2fVSdKX9yLSmrL_726nI1rlDlZ2c0Q4HXW5hEF1rU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/favorite/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"favorite",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Receber Produtos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/product/default",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"product",
+						"default"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": ""
+		}
+	]
+}

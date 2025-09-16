@@ -1,7 +1,12 @@
-import { IsEmail, IsString } from "class-validator";
+import { IsEmail, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class GetTokenDto {
-    @IsEmail()
-    @IsString()
-    email: string;
+  @ApiProperty({
+    description: 'Email do usuário para gerar o token',
+    example: 'usuario@email.com',
+  })
+  @IsEmail()
+  @IsString()
+  email: string;
 }

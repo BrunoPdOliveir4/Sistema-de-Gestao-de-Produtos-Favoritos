@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Client } from 'src/modules/clients/entities/Client.entity';
 import { Favorite } from 'src/modules/favorites/entities/Favorite.entity';
 import { Service } from 'src/modules/services/entities/Service.entity';
+import { DatabaseSeedService } from './SeedService';
 
 @Module({
   imports: [
@@ -24,5 +25,7 @@ import { Service } from 'src/modules/services/entities/Service.entity';
       },
     }),
   ],
+  providers: [DatabaseSeedService],
+  exports: [DatabaseSeedService]
 })
 export class DatabaseModule {}

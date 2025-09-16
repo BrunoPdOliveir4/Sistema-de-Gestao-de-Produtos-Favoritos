@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable, ForbiddenException } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  ForbiddenException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from 'src/infrastructure/decorators/Roles.decorator';
 import { Role } from 'src/modules/clients/enums/Role.enum';
@@ -20,7 +25,9 @@ export class RolesGuard implements CanActivate {
     const userRole = request['role']?.role; // assumindo que no payload do JWT tem `role`
 
     if (!requiredRoles.includes(userRole)) {
-      throw new ForbiddenException('Você não tem permissão para acessar esta rota.');
+      throw new ForbiddenException(
+        'Você não tem permissão para acessar esta rota.',
+      );
     }
 
     return true;
