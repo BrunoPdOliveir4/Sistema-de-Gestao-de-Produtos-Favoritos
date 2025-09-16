@@ -1,7 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ClientRepository } from '../repositories/Client.repository';
 import { Client } from '../entities/Client.entity';
 import { UpdateResult } from 'typeorm';
+import { CreateClientDto } from '../dtos/CreateClient.dto';
 
 @Injectable()
 export class ClientService {
@@ -13,8 +18,22 @@ export class ClientService {
     return client;
   }
 
-  async create(data: Partial<Client>): Promise<Client> {
-    return await this.repository.create(data);
+  async findByEmail(email:string): Promise<Client> {
+    const client = await this.repository.findByEmail(email);
+    if (!client) throw new NotFoundException('Client não encontrado');
+    return client;
+  }
+
+  async create(data: Partial<CreateClientDto>): Promise<Client> {
+    if (!data.email) {
+      throw new NotFoundException('Email é obrigatório');
+    }
+    const alreadyExists = await this.repository.findByEmail(data.email);
+    if (!alreadyExists) {
+      const client = await this.repository.create(data);
+      return client;
+    }
+    throw new BadRequestException('Já existe um usuário com este email.');
   }
 
   async update(id: string, data: Partial<Client>): Promise<UpdateResult> {
@@ -24,6 +43,4 @@ export class ClientService {
   async delete(id: string) {
     await this.repository.delete(id);
   }
-
-  // MELHORAR ISTO PQ NÃO TÁ MT COERENTE
 }

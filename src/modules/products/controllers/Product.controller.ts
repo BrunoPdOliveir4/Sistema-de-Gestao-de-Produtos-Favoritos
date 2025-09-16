@@ -1,12 +1,14 @@
 import { Controller, Get, Query, Param, UseInterceptors } from '@nestjs/common';
 import { ProductService } from '../services/Product.service';
 import { CacheInterceptor } from '@nestjs/cache-manager';
+import { Throttle } from '@nestjs/throttler';
 
 @Controller('product')
 @UseInterceptors(CacheInterceptor)
 export class ProductController {
   constructor(private readonly service: ProductService) {}
 
+  @Throttle({default: {limit: 2,ttl: 60000}})
   @Get()
   async getProductsFromDefaultService(
     @Query('limit') limit: number = 10,

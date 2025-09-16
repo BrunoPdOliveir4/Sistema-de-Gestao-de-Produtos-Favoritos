@@ -3,14 +3,12 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { decodedPayload } from 'src/common/types/payload';
+import { DecodedPayload } from 'src/common/types/AuthPayload.type';
 
 function extractUser(ctx: ExecutionContext): any {
   const request = ctx.switchToHttp().getRequest();
   const authHeader = request.headers.authorization;
-  const configService: ConfigService = request.app.get('ConfigService');
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     throw new UnauthorizedException('Token not found');
@@ -20,7 +18,9 @@ function extractUser(ctx: ExecutionContext): any {
 
   try {
     const jwtService = new JwtService({
-      secret: configService.get<string>('jwtSecret'),
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1y' },
+      
     });
 
     return jwtService.verify(token);
@@ -30,7 +30,7 @@ function extractUser(ctx: ExecutionContext): any {
 }
 
 export const User = createParamDecorator(
-  (_data: unknown, ctx: ExecutionContext): decodedPayload => {
+  (_data: unknown, ctx: ExecutionContext): DecodedPayload => {
     return extractUser(ctx);
   },
 );
