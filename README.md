@@ -120,6 +120,52 @@ Outras ferramentas, como `Mocha` ou `Jasmine`, poderiam ser utilizadas, mas exig
 
 ### Infraestrutura
 
+#### Estrutura de Pastas
+```
+src
+├───common
+│   └───types
+├───config
+├───infrastructure
+│   ├───auth
+│   │   ├───controller
+│   │   ├───dto
+│   │   ├───guards
+│   │   └───services
+│   ├───database
+│   ├───decorators
+│   ├───mail
+│   │   └───service
+│   └───middleware
+└───modules
+    ├───clients
+    │   ├───controllers
+    │   ├───dtos
+    │   ├───entities
+    │   ├───enums
+    │   ├───repositories
+    │   └───services
+    ├───favorites
+    │   ├───controllers
+    │   ├───dtos
+    │   ├───entities
+    │   ├───repositories
+    │   ├───services
+    │   └───types
+    ├───products
+    │   ├───controllers
+    │   └───services
+    └───services
+        ├───controllers
+        ├───dtos
+        ├───entities
+        ├───repositories
+        └───services
+```
+A aplicação segue o padrão do NestJS, organizada em módulos que representam domínios específicos do sistema. Cada módulo possui suas próprias camadas: controllers, responsáveis pelo roteamento e recebimento das requisições; services, que contêm a lógica de negócio e orquestram operações; e repositories, que fazem a comunicação com o banco de dados. Essa separação garante que cada componente tenha uma única responsabilidade, facilitando a manutenção, escalabilidade e testabilidade da aplicação.
+
+Além disso, a aplicação utiliza DTOs para validação e limitação dos dados trafegados entre cliente e servidor, types e enums para padronização e consistência de dados, e entities que representam as tabelas do banco de dados, servindo como modelos de persistência. A infraestrutura, que inclui autenticação, banco de dados, envio de emails e middlewares, é organizada separadamente, isolando a lógica técnica do domínio do negócio e permitindo maior reutilização e organização do código.
+
 #### Banco de Dados: `postgres`
 O PostgreSQL foi escolhido não apenas por ser o preferencial do desafio, mas também por suas vantagens técnicas sobre alternativas como `MongoDB` e `MySQL`. Em relação a bancos NoSQL como o `MongoDB`, ele oferece suporte a transações `ACID`, garantindo consistência e confiabilidade dos dados, o que é fundamental para que os produtos favoritos de um cliente estejam sempre corretos.
 

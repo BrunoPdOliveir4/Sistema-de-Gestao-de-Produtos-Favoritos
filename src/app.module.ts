@@ -34,14 +34,14 @@ import { JwtModule } from '@nestjs/jwt';
       ],
     }),
     JwtModule.registerAsync({
-          global: true,
-          imports: [ConfigModule],
-          inject: [ConfigService],
-          useFactory: async (config: ConfigService) => ({
-            secret: config.get<string>('JWT_SECRET'),
-            signOptions: { expiresIn: '1y' },
-          }),
-        }),
+      global: true,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => ({
+        secret: config.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: '1y' },
+      }),
+    }),
     DatabaseModule,
     ProductModule,
     ServiceModule,

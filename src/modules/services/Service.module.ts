@@ -7,10 +7,7 @@ import { ServiceController } from './controllers/Service.controller';
 import { HttpModule } from '@nestjs/axios';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Service]),
-    HttpModule,
-  ],
+  imports: [TypeOrmModule.forFeature([Service]), HttpModule],
   controllers: [ServiceController],
   providers: [ServiceService, ServiceRepository],
   exports: [ServiceService],

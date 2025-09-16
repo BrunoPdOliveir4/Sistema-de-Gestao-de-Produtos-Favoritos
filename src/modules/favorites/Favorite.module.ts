@@ -7,9 +7,7 @@ import { FavoriteRepository } from './repositories/Favorite.repository';
 import { FavoriteController } from './controllers/Favorite.controller';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Favorite]),
-  ProductModule
-],
+  imports: [TypeOrmModule.forFeature([Favorite]), ProductModule],
   controllers: [FavoriteController],
   providers: [FavoriteService, FavoriteRepository],
   exports: [FavoriteService],

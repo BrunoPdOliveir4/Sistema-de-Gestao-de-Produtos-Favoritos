@@ -20,9 +20,10 @@ export class ServiceRepository {
   }
 
   async findByIds(ids: string[]): Promise<Service[]> {
-  return this.repository.find({
-    where: { id: In(ids) },
-  })}
+    return this.repository.find({
+      where: { id: In(ids) },
+    });
+  }
 
   async findByName(name: string): Promise<Service | null> {
     return this.repository.findOne({ where: { name } });

@@ -19,7 +19,7 @@ export class ServiceService {
     return this.repository.findAll();
   }
 
-  async findById(id:string): Promise<Service> {
+  async findById(id: string): Promise<Service> {
     const service = await this.repository.findById(id);
     if (!service) throw new NotFoundException('Serviço não encontrado');
     return service;
